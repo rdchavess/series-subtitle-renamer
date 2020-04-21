@@ -211,17 +211,14 @@ public class Renamer {
      */
     private void rename(FileMatched matched) {
 	final Path subtitlePath = matched.getSubtitle().get();
-	final File destFile = subtitlePath.resolve(matched.getNewName(suffix)).toFile();
-	if (!destFile.exists()) {
-	    copyToBackup(subtitlePath);
-	    rename(subtitlePath.toFile(), destFile);
-	} else if (overwrite) {
-	    moveToBackup(destFile.toPath());
+	final File destFile = subtitlePath.getParent().resolve(matched.getNewName(suffix)).toFile();
+	if (!destFile.exists() || overwrite) {
+	    backup(matched);
 	    rename(subtitlePath.toFile(), destFile);
 	} else {
-	    System.err.println(
-		    "[WARNING] The file already exists (use \"-Doverwrite=true\" is you want do overwrite it): "
-			    + destFile.getPath());
+	    System.out
+	    .println("[WARNING] The file already exists. Use \"-Doverwrite=true\" if you want do overwrite it: "
+		    + destFile.getPath());
 	}
     }
 
@@ -232,7 +229,6 @@ public class Renamer {
      * @param destFile the dest file
      */
     private void rename(File srcFile, File destFile) {
-
 	if (srcFile.renameTo(destFile)) {
 	    System.out.println("[INFO] " + srcFile.getPath() + " => " + destFile.getPath());
 	} else {
@@ -243,28 +239,21 @@ public class Renamer {
     /**
      * Copy to backup.
      *
-     * @param filePath the file path
+     * @param subtitlePath the file path
      */
-    private void copyToBackup(final Path filePath) {
-
+    private void backup(final FileMatched matched) {
 	try {
+	    final Path subtitlePath = matched.getSubtitle().get();
+	    final File backupDir = subtitlePath.getParent().resolve(BKP_DIR_NAME).toFile();
+	    
 	    if (backupFiles) {
-		FileUtils.copyFileToDirectory(filePath.toFile(), filePath.getParent().resolve(BKP_DIR_NAME).toFile(),
-			true);
+		FileUtils.copyFileToDirectory(subtitlePath.toFile(), backupDir, true);
 	    }
-	} catch (IOException e) {
-	    throw new RuntimeException("Fail to create backup file", e);
-	}
-    }
-
-    /**
-     * Move to backup.
-     *
-     * @param filePath the file path
-     */
-    private void moveToBackup(final Path filePath) {
-	try {
-	    FileUtils.moveFileToDirectory(filePath.toFile(), filePath.getParent().resolve(BKP_DIR_NAME).toFile(), true);
+	    
+	    final File renamedFile = subtitlePath.getParent().resolve(matched.getNewName(suffix)).toFile();
+	    if (overwrite && renamedFile.exists()) {
+		FileUtils.moveFileToDirectory(renamedFile, backupDir, true);
+	    }
 	} catch (IOException e) {
 	    throw new RuntimeException("Fail to create backup file", e);
 	}
@@ -301,7 +290,7 @@ public class Renamer {
 	    });
 	    
 	    final Map<String, FileMatched> result = files.entrySet().stream()
-		    .filter(e -> e.getValue().hasBothPaths() && !e.getValue().isSameName(suffix))
+		    .filter(e -> !e.getValue().isSameName(suffix))
 		    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	    
 	    System.out.println("[INFO] Files in " + path.getFileName() + " are mapped!");

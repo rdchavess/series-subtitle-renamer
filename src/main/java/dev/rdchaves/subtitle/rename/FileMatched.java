@@ -37,7 +37,7 @@ public class FileMatched {
     public boolean isSameName(Optional<String> suffix) {
 	
 	return hasBothPaths() && StringUtils.equalsAny(substringBeforeLast(subtitle.get().getFileName().toString(), DOT),
-    		substringBeforeLast(video.get().getFileName().toString(), DOT),
+//    		substringBeforeLast(video.get().getFileName().toString(), DOT),
     		substringBeforeLast(video.get().getFileName().toString(), DOT) + suffix.orElse(StringUtils.EMPTY));
     }
     
