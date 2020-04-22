@@ -15,6 +15,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import dev.rdchaves.subtitle.model.FileMatched;
+
 /**
  * The Class Renamer.
  */
