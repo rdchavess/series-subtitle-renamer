@@ -1,4 +1,4 @@
-package dev.rdchaves.subtitle;
+package dev.rdchaves.subtitle.renamer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -6,7 +6,8 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
-import dev.rdchaves.subtitle.rename.Renamer;
+import dev.rdchaves.subtitle.renamer.executor.Executor;
+import dev.rdchaves.subtitle.renamer.executor.impl.ExecutorImpl;
 
 public class App {
 
@@ -21,7 +22,8 @@ public class App {
 				.orElseThrow(() -> new IllegalArgumentException(PATH_NOT_PRESENT_MESSAGE));
 
 		try {
-			new Renamer(Paths.get(pathParam).toRealPath()).execute();
+			Executor executor = new ExecutorImpl(Paths.get(pathParam).toRealPath());
+			executor.execute();
 		} catch (IOException e) {
 			System.err.println(PATH_DOESNT_EXIST_MESSAGE);
 		}

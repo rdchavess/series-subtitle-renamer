@@ -1,4 +1,4 @@
-package dev.rdchaves.subtitle.model;
+package dev.rdchaves.subtitle.renamer.model;
 
 import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
