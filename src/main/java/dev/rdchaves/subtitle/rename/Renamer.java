@@ -90,10 +90,10 @@ public class Renamer {
      *   <li>.yuv</li>
      * </ul>
      */
-    private String[] videoExtensions = new String[] { "3g2", "3gp", "amv", "asf", "avi", "drc", "flv", "flv", "flv",
-	    "f4v", "f4p", "f4a", "f4b", "gif", "gifv", "m4v", "mkv", "mng", "mov", "qt", "mp4", "m4p", "m4v", "mpg",
-	    "mp2", "mpeg", "mpe", "mpv", "mpg", "mpeg", "m2v", "mts", "m2ts", "ts", "mxf", "nsv", "ogv", "ogg", "rm",
-	    "rmvb", "roq", "svi", "vob", "webm", "wmv", "yuv" };
+    private String[] videoExtensions = new String[] { "3g2", "3gp", "amv", "asf", "avi", "drc", "flv", "flv", "f4v",
+        "f4p", "f4a", "f4b", "m4v", "mkv", "mng", "mov", "qt", "mp4", "m4p", "m4v", "mpg", "mp2", "mpeg",
+        "mpe", "mpv", "mpg", "mpeg", "m2v", "mts", "m2ts", "ts", "mxf", "nsv", "ogv", "ogg", "rm", "rmvb", "roq",
+        "svi", "vob", "webm", "wmv", "yuv" };
 
     /** The dry run. */
     private boolean dryRun;
